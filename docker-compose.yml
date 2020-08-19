@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    env_file:
+      - ./julius_app/settings/.env.development
+    ports:
+      - "5432:5432"
+  web:
+    build: .
+    command: gunicorn --worker-tmp-dir=/dev/shm --workers=2 --threads=4 --worker-class=gthread --log-file=- --bind=0.0.0.0:8000 julius_app.wsgi
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - ./julius_app/settings/.env.development

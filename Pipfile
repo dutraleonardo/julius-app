@@ -1,0 +1,26 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+pytest-django = "*"
+pytest-cov = "*"
+
+[packages]
+django = "==2.2.11"
+djangorestframework = "*"
+markdown = "*"
+django-filter = "*"
+django-cors-headers = "*"
+python-decouple = "*"
+dj-database-url = "*"
+whitenoise = "*"
+pyyaml = "*"
+uritemplate = "*"
+gunicorn = "*"
+psycopg2 = "*"
+dj-rest-auth = "*"
+django-allauth = "*"
+drf-yasg = "*"
