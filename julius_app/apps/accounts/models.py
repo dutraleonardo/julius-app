@@ -46,15 +46,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     PERSON = 'person'
     ACCOUNT_TYPES = (
         (COMPANY, _('company')),
-        (PERSON, _('whipersonte'))
+        (PERSON, _('person'))
     )
+    username = None
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(_('first name'), max_length=30, blank=True, null=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True, null=True)
     email = models.EmailField(_('email address'), unique=True, blank=True, null=True)
     phone_number = models.CharField(_('phone_number'), max_length=100, blank=True, null=True)
     cpf_of_cnpj = models.CharField(_('cpf_or_cnpj'), max_length=14, blank=True, null=True)
-    account_type = models.CharField(_('color'), max_length=124, choices=ACCOUNT_TYPES, blank=True, null=True)
+    account_type = models.CharField(_('account_type'), max_length=124, choices=ACCOUNT_TYPES, blank=True, null=True)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -99,8 +100,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Card(models.Model):
-    user = models.ForeignKey('accounts.User', verbose_name=_('user'), related_name='card',
-                             on_delete=models.CASCADE)
+    user = models.OneToOneField('accounts.User', verbose_name=_('user'), related_name='card',
+                                on_delete=models.CASCADE)
     points = models.PositiveIntegerField(blank=True, null=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
@@ -111,11 +112,19 @@ class Card(models.Model):
 
 
 class Transaction(models.Model):
+    ADD = 'adicionar'
+    REMOVE = 'remover'
+    TRANSACTION_TYPES = (
+        (ADD, _('adicionar')),
+        (REMOVE, _('remover'))
+    )
     user = models.ForeignKey('accounts.User', verbose_name=_('user'), related_name='transactions',
                              on_delete=models.CASCADE)
     card = models.ForeignKey('accounts.Card', verbose_name=_('card'), related_name='transactions',
                              on_delete=models.CASCADE)
     value = models.IntegerField(blank=True, null=True)
+    transaction_type = models.CharField(_('transaction_type'), max_length=124, choices=TRANSACTION_TYPES, blank=True,
+                                        null=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
 
     class Meta:
