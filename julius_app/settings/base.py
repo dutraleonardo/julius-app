@@ -183,3 +183,7 @@ SWAGGER_SETTINGS = {
 REST_AUTH_SERIALIZERS = {
     'TOKEN_SERIALIZER': 'julius_app.apps.accounts.serializers.CustomTokenSerializer',
 }
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'julius_app.apps.accounts.serializers.CustomRegisterSerializer'
+}
