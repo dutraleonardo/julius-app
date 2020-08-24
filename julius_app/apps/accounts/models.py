@@ -50,12 +50,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     username = None
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    first_name = models.CharField(_('first name'), max_length=30, blank=True, null=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True, null=True)
-    email = models.EmailField(_('email address'), unique=True, blank=True, null=True)
+    first_name = models.CharField(_('first name'), max_length=30, blank=False, null=False)
+    last_name = models.CharField(_('last name'), max_length=150, blank=False, null=True)
+    email = models.EmailField(_('email address'), unique=True, blank=False, null=False)
     phone_number = models.CharField(_('phone_number'), max_length=100, blank=True, null=True)
-    cpf_of_cnpj = models.CharField(_('cpf_or_cnpj'), max_length=14, blank=True, null=True)
-    account_type = models.CharField(_('account_type'), max_length=124, choices=ACCOUNT_TYPES, blank=True, null=True)
+    cpf_or_cnpj = models.CharField(_('cpf_or_cnpj'), max_length=14, blank=False, null=True)
+    account_type = models.CharField(_('account_type'), max_length=124, choices=ACCOUNT_TYPES, blank=False, null=False)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -112,11 +112,11 @@ class Card(models.Model):
 
 
 class Transaction(models.Model):
-    ADD = 'adicionar'
-    REMOVE = 'remover'
+    ADD = 'add'
+    REMOVE = 'remove'
     TRANSACTION_TYPES = (
-        (ADD, _('adicionar')),
-        (REMOVE, _('remover'))
+        (ADD, _('add')),
+        (REMOVE, _('remove'))
     )
     user = models.ForeignKey('accounts.User', verbose_name=_('user'), related_name='transactions',
                              on_delete=models.CASCADE)
