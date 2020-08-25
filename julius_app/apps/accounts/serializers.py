@@ -5,7 +5,7 @@ from dj_rest_auth.serializers import TokenSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 
-from .models import User, Product, Card, Campaign
+from .models import User, Product, Card, Campaign, Transaction
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -39,6 +39,65 @@ class CustomTokenSerializer(TokenSerializer):
     class Meta:
         model = TokenModel
         fields = ('key', 'user')
+
+
+class CampaignSerializer(serializers.ModelSerializer):
+    # product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = Campaign
+        fields = ('id', 'campaign_name', 'description', 'points_qty',
+                  'product', 'user')
+
+    def to_representation(self, instance):
+        """
+        This method takes the target of the field as the value argument,
+        and should return the representation that should be used
+        to serialize the target
+        """
+        return {
+            'id': instance.id,
+            'campaign_name': instance.campaign_name,
+            'description': instance.description,
+            'points_qty': instance.points_qty,
+            'product': {
+                'id': instance.product.id,
+                'product_name': instance.product.product_name,
+                'description': instance.product.description
+            },
+            'user': instance.user.id
+        }
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Transaction
+        fields = ('id', 'value', 'transaction_type', 'user',
+                  'card', 'campaign')
+
+    def to_representation(self, instance):
+        """
+        This method takes the target of the field as the value argument,
+        and should return the representation that should be used
+        to serialize the target
+        """
+        return {
+            'id': instance.id,
+            'transaction_type': instance.transaction_type,
+            'value': instance.value,
+            'card': {
+                'id': instance.card.id,
+                'points': instance.card.points,
+            },
+            'campaign': {
+                'id': instance.campaign.id,
+                'campaign_name': instance.campaign.campaign_name,
+                'description': instance.campaign.description,
+                'points_qty': instance.campaign.points_qty,
+            },
+            'user': instance.user.id
+        }
 
 
 class CustomRegisterSerializer(RegisterSerializer):
