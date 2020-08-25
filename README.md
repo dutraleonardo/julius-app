@@ -9,21 +9,11 @@ Make sure you have [pipenv installed](https://docs.pipenv.org/install.html). The
     
 Clone this repository
     
-    git clone git@bitbucket.org:lixao/python-django-project-template.git
+    git clone https://github.com/dutraleonardo/julius-app.git
     
 To create a new Django project (make sure to change `project_name`)
 
     django-admin.py startproject -e py,md,yml,ini,example -n Procfile --template python-django-project-template project_name
-
-Version your project
-    
-    git init
-    git add .
-    git commit -m 'Initial commit'
-    
-Copy .env.example for .env.development
-
-    cp project_name/settings/.env.example project_name/settings/.env.development
 
 Install dependence
 
