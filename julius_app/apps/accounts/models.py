@@ -122,14 +122,16 @@ class Transaction(models.Model):
                              on_delete=models.CASCADE)
     card = models.ForeignKey('accounts.Card', verbose_name=_('card'), related_name='transactions',
                              on_delete=models.CASCADE)
+    campaign = models.ForeignKey('accounts.Campaign', verbose_name=_('campaign'), related_name='transactions',
+                                 on_delete=models.CASCADE)
     value = models.IntegerField(blank=True, null=True)
     transaction_type = models.CharField(_('transaction_type'), max_length=124, choices=TRANSACTION_TYPES, blank=True,
                                         null=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
 
     class Meta:
-        verbose_name = _('business_info')
-        verbose_name_plural = _('business_infos')
+        verbose_name = _('transaction')
+        verbose_name_plural = _('transactions')
 
 
 class Product(models.Model):
@@ -144,8 +146,8 @@ class Product(models.Model):
 class Campaign(models.Model):
     user = models.ForeignKey('accounts.User', verbose_name=_('user'), related_name='campaign',
                              on_delete=models.CASCADE)
-    product = models.ForeignKey('accounts.Product', verbose_name=_('product'), related_name='campaign',
-                                on_delete=models.CASCADE)
+    product = models.OneToOneField('accounts.Product', verbose_name=_('product'), related_name='campaign',
+                                   on_delete=models.CASCADE)
     campaign_name = models.CharField(_('campaign_name'), max_length=30, blank=True, null=True)
     description = models.CharField(_('description'), max_length=120, blank=True, null=True)
     points_qty = models.PositiveIntegerField(blank=True, null=True)
