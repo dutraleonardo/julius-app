@@ -121,13 +121,13 @@ class CustomRegisterSerializer(RegisterSerializer):
         if request.data['account_type'] == User.COMPANY:
             request.data['account_type'] = User.COMPANY
         else:
-            request.data['account_type'] = User.PERSONclear
+            request.data['account_type'] = User.PERSON
         adapter = get_adapter()
         user = adapter.new_user(request)
         if request.data['account_type'] == User.COMPANY:
             user.account_type = User.COMPANY
         else:
-            user.account_type = User.PERSONclear
+            user.account_type = User.PERSON
         user.cpf_or_cnpj = request.data['cpf_or_cnpj']
         user.phone_number = request.data['phone_number']
         self.cleaned_data = self.get_cleaned_data()
